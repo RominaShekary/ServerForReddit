@@ -123,6 +123,7 @@ class RequestHandler extends Thread {
                 write("done");
                 break;
             }
+            //getChannelPosts-c name
             case "getChannelPosts": {
                 Map<String, String> data = new HashMap<>(Map.of("channel" , split[1]));
                 StringBuilder str = new StringBuilder();
@@ -137,10 +138,6 @@ class RequestHandler extends Thread {
                     e.printStackTrace();
                 }
                 break;
-            }
-            //addComment-comment-username
-            case "addComment":{
-
             }
             //getUser-uname
             case "getUser":{
