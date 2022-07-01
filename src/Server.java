@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -169,7 +170,18 @@ class RequestHandler extends Thread {
                 else
                     write(channelRow);
             }
-
+            //getAllChannels
+            case "getAllChannels":{
+                StringBuilder str = new StringBuilder();
+                try {
+                    String channels = DataBase.getInstance().getController("Channels").read();
+                    String[] eachChannel = channels.split("\n");
+                    Arrays.stream(eachChannel).forEach(s -> str.append(s).append("/"));
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+                write(str.toString());
+            }
             default:
                 System.out.println("invalid request");
         }
