@@ -156,6 +156,19 @@ class RequestHandler extends Thread {
                 else
                     write(accountRow);
             }
+            //getChannel-c name
+            case "getChannel":{
+                String channelRow = "invalid";
+                try {
+                    channelRow = DataBase.getInstance().getController("Channels").getRow(split[1]);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+                if (channelRow.equals("invalid"))
+                    write("channel did not exist");
+                else
+                    write(channelRow);
+            }
 
             default:
                 System.out.println("invalid request");
