@@ -24,4 +24,12 @@ public class Server {
             e.printStackTrace();
         }
     }
+
+}
+
+class RequestHandler extends Thread {
+    Socket socket;
+    DataInputStream dis;
+    DataOutputStream dos;
+
 }
