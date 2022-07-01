@@ -137,6 +137,10 @@ class RequestHandler extends Thread {
                 }
                 break;
             }
+            //addComment-comment-username
+            case "addComment":{
+
+            }
             default:
                 System.out.println("invalid request");
         }
