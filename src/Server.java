@@ -31,5 +31,64 @@ class RequestHandler extends Thread {
     Socket socket;
     DataInputStream dis;
     DataOutputStream dos;
+    public RequestHandler(Socket socket) throws IOException {
+        this.socket = socket;
+        dis = new DataInputStream(socket.getInputStream());
+        dos = new DataOutputStream(socket.getOutputStream());
+    }
 
+    String read() {
+        StringBuilder str = new StringBuilder();
+        try {
+            int i;
+            while ((i = dis.read()) != 0)
+                str.append(((char) i));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return str.toString();
+    }
+
+    void write(String str) {
+        try {
+            dos.write(str.getBytes(StandardCharsets.UTF_8));
+            dos.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void run() {
+        System.out.print("one request accepted + ");
+        String command = read();
+        System.out.println(command);
+
+        String[] split = command.split("-");
+        switch (split[0]) {
+            //signup-username-password-email
+            case "signup": {
+                String accountRow = null;
+                try {
+                    accountRow = DataBase.getInstance().getController("Accounts").getRow(split[1]);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+                if (!Objects.equals(accountRow, "invalid"))
+                    write("account already exists");
+                else {
+                    Map<String, String> data = new HashMap<>(Map.of("username", split[1], "password", split[2], "email", split[3]));
+                    StringBuilder str = new StringBuilder(data.get("username"));
+                    str.append(":").append(data.get("password")).append("-").append(data.get("email")).append("\n");
+                    DataBase.getInstance().getController("Accounts").write(str.toString());
+                    DataBase.accounts++;
+                    write("done");
+                }
+                break;
+            }
+            //login-username-password
+            default:
+                System.out.println("invalid request");
+        }
+    }
 }
