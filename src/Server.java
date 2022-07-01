@@ -87,6 +87,24 @@ class RequestHandler extends Thread {
                 break;
             }
             //login-username-password
+            case "login": {
+                String accountRow = "invalid";
+                try {
+                    accountRow = DataBase.getInstance().getController("Accounts").getRow(split[1]);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+                if (accountRow.equals("invalid"))
+                    write("account did not exist");
+                else if (!accountRow.split(":")[0].equals(split[1]))
+                    write("account did not exist");
+                else if (!accountRow.split(":")[1].split("-")[0].equals(split[2]))
+                    write("incorrect password");
+                else write("done");
+                break;
+            }
+            //getUser-uname-password-email
+
             default:
                 System.out.println("invalid request");
         }
