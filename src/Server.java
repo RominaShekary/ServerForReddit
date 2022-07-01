@@ -103,7 +103,16 @@ class RequestHandler extends Thread {
                 else write("done");
                 break;
             }
-            //getUser-uname-password-email
+            //addChannel-channel name-admin username
+            case "addChannel": {
+                Map<String, String> data = new HashMap<>(Map.of("c name", split[1], "admin uname", split[2]));
+                StringBuilder str = new StringBuilder();
+                str.append(data.get("c name")).append("-").append(data.get("admin uname")).append("\n");
+                DataBase.getInstance().getController("Channels").write(str.toString());
+                DataBase.channels++;
+                write("done");
+                break;
+            }
 
             default:
                 System.out.println("invalid request");
