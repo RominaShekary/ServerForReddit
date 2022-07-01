@@ -113,6 +113,15 @@ class RequestHandler extends Thread {
                 write("done");
                 break;
             }
+            //addPost-title-description-channel
+            case "addPost": {
+                Map<String, String> data = new HashMap<>(Map.of("title", split[1], "desc", split[2], "channel", split[3]));
+                StringBuilder str = new StringBuilder();
+                str.append(data.get("title")).append("-").append(data.get("desc")).append("-").append(data.get("channel")).append("\n");
+                DataBase.getInstance().getController("Posts").write(str.toString());
+                write("done");
+                break;
+            }
 
             default:
                 System.out.println("invalid request");
