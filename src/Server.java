@@ -122,7 +122,21 @@ class RequestHandler extends Thread {
                 write("done");
                 break;
             }
-
+            case "getChannelPosts": {
+                Map<String, String> data = new HashMap<>(Map.of("channel" , split[1]));
+                StringBuilder str = new StringBuilder();
+                try {
+                    String[] rows = DataBase.getInstance().getController("Posts").getRows("-"+data.get("channel"));
+                    for (int i = 0; i < rows.length; i++) {
+                        str.append(rows[i]).append("/");
+                    }
+                    str.append(rows.length);
+                    write(str.toString());
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+                break;
+            }
             default:
                 System.out.println("invalid request");
         }
