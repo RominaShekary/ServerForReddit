@@ -141,6 +141,22 @@ class RequestHandler extends Thread {
             case "addComment":{
 
             }
+            //getUser-uname
+            case "getUser":{
+                String accountRow = "invalid";
+                try {
+                    accountRow = DataBase.getInstance().getController("Accounts").getRow(split[1]);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+                if (accountRow.equals("invalid"))
+                    write("account did not exist");
+                else if (!accountRow.split(":")[0].equals(split[1]))
+                    write("account did not exist");
+                else
+                    write(accountRow);
+            }
+
             default:
                 System.out.println("invalid request");
         }
