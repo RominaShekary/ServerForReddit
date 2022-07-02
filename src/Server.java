@@ -142,9 +142,8 @@ class RequestHandler extends Thread {
                 }
                 break;
             }
-<<<<<<< Updated upstream
             //getUser-uname
-            case "getUser":{
+            case "getUser": {
                 String accountRow = "invalid";
                 try {
                     accountRow = DataBase.getInstance().getController("Accounts").getRow(split[1]);
@@ -159,7 +158,7 @@ class RequestHandler extends Thread {
                     write(accountRow);
             }
             //getChannel-c name
-            case "getChannel":{
+            case "getChannel": {
                 String channelRow = "invalid";
                 try {
                     channelRow = DataBase.getInstance().getController("Channels").getRow(split[1]);
@@ -172,7 +171,7 @@ class RequestHandler extends Thread {
                     write(channelRow);
             }
             //getAllChannels
-            case "getAllChannels":{
+            case "getAllChannels": {
                 StringBuilder str = new StringBuilder();
                 try {
                     String channels = DataBase.getInstance().getController("Channels").read();
@@ -182,14 +181,16 @@ class RequestHandler extends Thread {
                     e.printStackTrace();
                 }
                 write(str.toString());
-=======
+            }
             //addComment-comment-username
             case "addComment": {
 
->>>>>>> Stashed changes
+
             }
             default:
                 System.out.println("invalid request");
+                break;
         }
     }
+
 }
