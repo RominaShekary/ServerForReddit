@@ -25,13 +25,13 @@ public class Server {
             e.printStackTrace();
         }
     }
-
 }
 
 class RequestHandler extends Thread {
     Socket socket;
     DataInputStream dis;
     DataOutputStream dos;
+
     public RequestHandler(Socket socket) throws IOException {
         this.socket = socket;
         dis = new DataInputStream(socket.getInputStream());
@@ -39,15 +39,18 @@ class RequestHandler extends Thread {
     }
 
     String read() {
-        StringBuilder str = new StringBuilder();
         try {
-            int i;
-            while ((i = dis.read()) != 0)
-                str.append(((char) i));
-        } catch (IOException e) {
+            StringBuilder message = new StringBuilder();
+            int c;
+            while ((c = dis.read()) != 0) {
+                message.append((char) c);
+            }
+            System.out.println("Message from client: " + message.toString());
+            return message.toString();
+        } catch (Exception e) {
             e.printStackTrace();
         }
-        return str.toString();
+        return "";
     }
 
     void write(String str) {
@@ -125,10 +128,10 @@ class RequestHandler extends Thread {
             }
             //getChannelPosts-c name
             case "getChannelPosts": {
-                Map<String, String> data = new HashMap<>(Map.of("channel" , split[1]));
+                Map<String, String> data = new HashMap<>(Map.of("channel", split[1]));
                 StringBuilder str = new StringBuilder();
                 try {
-                    String[] rows = DataBase.getInstance().getController("Posts").getRows("-"+data.get("channel"));
+                    String[] rows = DataBase.getInstance().getController("Posts").getRows("-" + data.get("channel"));
                     for (int i = 0; i < rows.length; i++) {
                         str.append(rows[i]).append("/");
                     }
@@ -139,6 +142,7 @@ class RequestHandler extends Thread {
                 }
                 break;
             }
+<<<<<<< Updated upstream
             //getUser-uname
             case "getUser":{
                 String accountRow = "invalid";
@@ -178,6 +182,11 @@ class RequestHandler extends Thread {
                     e.printStackTrace();
                 }
                 write(str.toString());
+=======
+            //addComment-comment-username
+            case "addComment": {
+
+>>>>>>> Stashed changes
             }
             default:
                 System.out.println("invalid request");
